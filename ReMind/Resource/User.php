@@ -37,7 +37,7 @@ class User extends PageBase
         }
         $code = SmsApi::getCheckCodeInfo(); //获取验证码
         if (!empty($code)) {
-            $this->response->success(['code' => $code]);
+            $this->response->success();
         } else {
             $this->response->error('发送失败');
         }
@@ -57,6 +57,5 @@ class User extends PageBase
         if ($checkRes) {
             $this->response->success();
         }
-
     }
 }
