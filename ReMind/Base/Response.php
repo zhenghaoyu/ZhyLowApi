@@ -74,15 +74,24 @@ class Response
         // TODO: Implement __get() method.
         return isset($this->$name) ? $this->$name : '';
     }
-    public function success($outArr = [])
+    public function success($outArr = [], $msg = 'success')
     {
         $this->Json(
             [
                 'code'  => 0,
-                'msg'   => 'success',
+                'msg'   => $msg,
                 'data'  => $outArr,
             ]
-    );
-
+        );
+    }
+    public function error($msg = 'error', $outArr = '', $code = -400 )
+    {
+        $this->Json(
+            [
+                'code'  => $code,
+                'msg'   => $msg,
+                'data'  => $outArr,
+            ]
+        );
     }
 }
