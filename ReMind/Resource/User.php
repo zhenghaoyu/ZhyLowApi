@@ -19,6 +19,7 @@ class User extends PageBase
     {
         return [
             ['GET', '/phoneCode', 'getPhoneCode'],
+            ['GET', '/checkLogin', 'checkLogin'],
         ];
     }
 
@@ -40,5 +41,22 @@ class User extends PageBase
         } else {
             $this->response->error('发送失败');
         }
+    }
+
+    /**
+     * 验证登录情况
+     */
+    public function checkLogin()
+    {
+        $phone = $this->request->get('phone', '');
+        $code = $this->request->get('code', '');
+        if (empty($code) || !RemindPhoneUtil::checkPhoneStr($phone)) {
+            $this->response->error('入参错误');
+        }
+        $checkRes = SmsApi::checkLogin($phone, $code);
+        if ($checkRes) {
+            $this->response->success();
+        }
+
     }
 }

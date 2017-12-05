@@ -19,4 +19,15 @@ class SmsApi
     {
         return 1243;
     }
+
+    /**
+     * 校验登录，返回token
+     * @param $phone
+     * @param $code
+     * @return bool
+     */
+    static public function checkLogin($phone, $code)
+    {
+        return true;
+    }
 }
