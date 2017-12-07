@@ -24,4 +24,11 @@ class RemindPhoneUtil
             return false;
         }
     }
+    /**
+     * 生成token
+     */
+    static public function addToken($str)
+    {
+        return md5(md5('zhy_ohYang_'.time().$str));
+    }
 }

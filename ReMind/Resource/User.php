@@ -35,11 +35,11 @@ class User extends PageBase
         if (!RemindPhoneUtil::checkPhoneStr($phone)) {
             $this->response->error('手机号格式错误');
         }
-        $code = SmsApi::getCheckCodeInfo(); //获取验证码
+        $code = SmsApi::getCheckCodeInfo($phone); //获取验证码
         if (!empty($code)) {
             $this->response->success();
         } else {
-            $this->response->error('发送失败');
+            $this->response->error('一分钟内只发一次');
         }
     }
 
@@ -55,7 +55,9 @@ class User extends PageBase
         }
         $checkRes = SmsApi::checkLogin($phone, $code);
         if ($checkRes) {
-            $this->response->success();
+            $this->response->success(['token' => $checkRes]);
+        } else {
+            $this->response->error('校验失败');
         }
     }
 }

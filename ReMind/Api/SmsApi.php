@@ -8,16 +8,32 @@
 
 namespace ReMind\Api\ReMind\Api;
 
+use Remind\Api\Model\UserInfoModel;
+use Remind\Api\Model\RedisModel;
+use Remind\Api\ReMind\Util\HttpUtil;
+use ReMind\Api\ReMind\Util\RemindPhoneUtil;
 
 class SmsApi
 {
+    static public $cacheKey = "code_";
     /**
      * 获取短信接口
      * @return int
      */
-    static public function getCheckCodeInfo()
+    static public function getCheckCodeInfo($phone)
     {
-        return 1243;
+        $cacheKey = self::$cacheKey.$phone;
+        if (RedisModel::get($cacheKey)) {
+            return false;
+        }
+        $code = rand(1000, 9999);
+        //发送验证码
+        $sendRes = HttpUtil::aliDaYu($code, $phone);
+        if ($sendRes) {
+            RedisModel::set($cacheKey, $code, 120); //添加缓存
+            return true;
+        }
+        return false;
     }
 
     /**
@@ -28,6 +44,29 @@ class SmsApi
      */
     static public function checkLogin($phone, $code)
     {
-        return true;
+        $cacheKey = self::$cacheKey.$phone;
+        $cacheCode = RedisModel::get($cacheKey);
+        self::addUser($phone);
+        if (intval($cacheCode) === intval($code)) {
+            RedisModel::del($cacheKey);
+            $token = RemindPhoneUtil::addToken($phone);
+            RedisModel::set($phone, $token, 3600*24*2); //两天过期
+            self::addUser($phone);
+            return $token;
+        } else {
+            return false;
+        }
+    }
+
+    /**
+     * 不存在就新增手机号
+     * @param $phone
+     */
+    static public function addUser($phone)
+    {
+        $userInfo = UserInfoModel::getInstance()->getList("*", "phone=".$phone);
+        if (empty($userInfo)) {
+            UserInfoModel::getInstance()->insert(['phone' => $phone]);
+        }
     }
 }
