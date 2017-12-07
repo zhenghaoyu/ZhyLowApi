@@ -50,7 +50,7 @@ class SmsApi
         if (intval($cacheCode) === intval($code)) {
             RedisModel::del($cacheKey);
             $token = RemindPhoneUtil::addToken($phone);
-            RedisModel::set($phone, $token, 3600*24*2); //两天过期
+            RedisModel::set($token, $phone, 3600*24*2); //两天过期
             self::addUser($phone);
             return $token;
         } else {
