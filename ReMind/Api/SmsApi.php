@@ -117,6 +117,9 @@ class SmsApi
         $where['phone'] = $phone;
         $data = SendInfoModel::getInstance()->getList("content,send_time,created_at", $where, "created_at DESC");
         $res = [];
+        if (empty($data)) {
+            return $res;
+        }
         foreach ($data as $oneInfo) {
             if ($oneInfo['send_time'] < time()) {
                 $res['has_send'][] = $oneInfo;
