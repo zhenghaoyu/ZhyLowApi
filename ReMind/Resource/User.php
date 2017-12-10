@@ -19,7 +19,7 @@ class User extends PageBase
     {
         return [
             ['GET', '/phoneCode', 'getPhoneCode'],
-            ['GET', '/checkLogin', 'checkLogin'],
+            ['POST', '/checkLogin', 'checkLogin'],
         ];
     }
 

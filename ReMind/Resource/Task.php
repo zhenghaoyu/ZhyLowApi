@@ -16,13 +16,13 @@ class Task extends PageBase
     public function setUriRules()
     {
         return [
-            ['GET', '/addTask', 'addTask'],
+            ['POST', '/addTask', 'addTask'],
             ['GET', '/taskInfo', 'getTaskInfo'],
         ];
     }
     public function addTask()
     {
-        $token = $this->request->get('token', '');
+        $token = $this->request->header('token', '');
         $phone = $this->request->get('phone_str', '');
         $sendTime = $this->request->get('send_time', 0);
         $sendContent = $this->request->get('send_content', '');
@@ -44,7 +44,7 @@ class Task extends PageBase
     }
     public function getTaskInfo()
     {
-        $token = $this->request->get('token', '');
+        $token = $this->request->header('token', '');
         $phone = $this->request->get('phone_str', '');
         if (!SmsApi::isLogin($token, $phone)) {
             $this->response->error('未登录', '', -101);
