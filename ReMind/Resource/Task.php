@@ -22,7 +22,7 @@ class Task extends PageBase
     }
     public function addTask()
     {
-        $token = $this->request->header('token', '');
+        $token = $this->request->header('HTTP_TOKEN', '');
         $phone = $this->request->get('phone_str', '');
         $sendTime = $this->request->get('send_time', 0);
         $sendContent = $this->request->get('send_content', '');
@@ -44,7 +44,7 @@ class Task extends PageBase
     }
     public function getTaskInfo()
     {
-        $token = $this->request->header('token', '');
+        $token = $this->request->header('HTTP_TOKEN', '');
         $phone = $this->request->get('phone_str', '');
         if (!SmsApi::isLogin($token, $phone)) {
             $this->response->error('未登录', '', -101);
