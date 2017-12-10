@@ -8,6 +8,7 @@
 
 namespace ReMind\Api\ReMind\Api;
 
+use Remind\Api\Model\SendInfoModel;
 use Remind\Api\Model\UserInfoModel;
 use Remind\Api\Model\RedisModel;
 use Remind\Api\ReMind\Util\HttpUtil;
@@ -68,5 +69,61 @@ class SmsApi
         if (empty($userInfo)) {
             UserInfoModel::getInstance()->insert(['phone' => $phone]);
         }
+    }
+
+    /**
+     * 判断是否为登录状态
+     * @param $token
+     * @param $phone
+     * @return bool
+     */
+    static public function isLogin($token, $phone)
+    {
+        $loginCache = RedisModel::get($token);
+        if ($loginCache && intval($loginCache) === intval($phone)) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    /**
+     * 新增发送信息
+     * @param $phone
+     * @param $sendTime
+     * @param $sendContent
+     * @return bool
+     */
+    static public function addSendContent($phone, $sendTime, $sendContent)
+    {
+        $field['content'] = $sendContent;
+        $field['phone'] = $phone;
+        $field['send_time'] = $sendTime;
+        $res = SendInfoModel::getInstance()->insert($field);
+        if ($res) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    /**
+     * 获取发送任务列表
+     * @param $phone
+     * @return array|mixed
+     */
+    static public function getTaskInfoByPhone($phone)
+    {
+        $where['phone'] = $phone;
+        $data = SendInfoModel::getInstance()->getList("content,send_time,created_at", $where, "created_at DESC");
+        $res = [];
+        foreach ($data as $oneInfo) {
+            if ($oneInfo['send_time'] < time()) {
+                $res['has_send'][] = $oneInfo;
+            } else {
+                $res['no_send'][] = $oneInfo;
+            }
+        }
+        return $res;
     }
 }
