@@ -29,7 +29,7 @@ class Task extends PageBase
         if (!SmsApi::isLogin($token, $phone)) {
             $this->response->error('未登录', '', -101);
         }
-        if (intval($sendTime) < time()) {
+        if (intval($sendTime) < (time()+200)) {
             $this->response->error('选择时间错误', '', -102);
         }
         if (mb_strlen($sendContent) > 30 || empty($sendContent)) {
