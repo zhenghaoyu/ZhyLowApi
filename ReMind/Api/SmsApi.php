@@ -96,6 +96,7 @@ class SmsApi
      */
     static public function addSendContent($phone, $sendTime, $sendContent)
     {
+        $sendTime = intval($sendTime/300)*300;
         $field['content'] = $sendContent;
         $field['phone'] = $phone;
         $field['send_time'] = $sendTime;
