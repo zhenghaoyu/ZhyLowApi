@@ -6,7 +6,7 @@
  * Time: 上午12:01
  */
 
-namespace Remind\Api\Remind\Resource;
+namespace Remind\Api\ReMind\Resource;
 
 
 use Remind\Api\ReMind\Api\SaleTicketApi;
