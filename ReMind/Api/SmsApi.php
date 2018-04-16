@@ -47,9 +47,6 @@ class SmsApi
     {
         $cacheKey = self::$cacheKey.$phone;
         $cacheCode = RedisModel::get($cacheKey);
-        if (!$cacheCode) {
-            return false;
-        }
         self::addUser($phone);
         if (intval($cacheCode) === intval($code)) {
             RedisModel::del($cacheKey);
