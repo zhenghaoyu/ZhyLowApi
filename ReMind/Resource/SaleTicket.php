@@ -56,10 +56,13 @@ class SaleTicket extends PageBase
     public function getSaleInfoById()
     {
         $saleId = $this->request->get('id', '');
+        if (empty($saleId)) {
+            $this->response->error('入参错误');
+        }
         $saleApi = new SaleTicketApi();
         $saleInfo = $saleApi->getSaleInfoById($saleId);
         if (empty($saleInfo)) {
-            $this->response->error('查询失败,发送');
+            $this->response->error('查询失败');
         }
         $this->response->success($saleInfo);
     }
