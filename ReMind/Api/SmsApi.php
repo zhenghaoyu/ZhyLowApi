@@ -12,7 +12,7 @@ use Remind\Api\Model\SendInfoModel;
 use Remind\Api\Model\UserInfoModel;
 use Remind\Api\Model\RedisModel;
 use Remind\Api\ReMind\Util\HttpUtil;
-use ReMind\Api\ReMind\Util\RemindPhoneUtil;
+use Remind\Api\ReMind\Util\RemindPhoneUtil;
 
 class SmsApi
 {
@@ -47,6 +47,9 @@ class SmsApi
     {
         $cacheKey = self::$cacheKey.$phone;
         $cacheCode = RedisModel::get($cacheKey);
+        if (!$cacheCode) {
+            return false;
+        }
         self::addUser($phone);
         if (intval($cacheCode) === intval($code)) {
             RedisModel::del($cacheKey);
