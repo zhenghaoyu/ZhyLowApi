@@ -43,4 +43,18 @@ class SaleTicketApi
         return $res;
     }
 
+    /**
+     * 根据id获取用户提交信息
+     * @param $id
+     * @return array|mixed
+     */
+    public function getSaleInfoById($id)
+    {
+        $field = "id,phone,url_str";
+        $saleInfo = SaleTicketInfoModel::getInstance()->getRow(['id' => $id], $field);
+        if (!$saleInfo) {
+            return [];
+        }
+        return $saleInfo;
+    }
 }

@@ -19,6 +19,7 @@ class SaleTicket extends PageBase
     {
         return [
             ['POST', '/addSaleTicket', 'addSaleTicket'],
+            ['GET', '/SaleInfoById', 'getSaleInfoById'],
         ];
     }
     public function addSaleTicket()
@@ -47,5 +48,19 @@ class SaleTicket extends PageBase
             $this->response->error('查询失败,发送');
         }
         $this->response->success('已查询');
+    }
+
+    /**
+     * 根据id查询查找信息
+     */
+    public function getSaleInfoById()
+    {
+        $saleId = $this->request->get('id', '');
+        $saleApi = new SaleTicketApi();
+        $saleInfo = $saleApi->getSaleInfoById($saleId);
+        if (empty($saleInfo)) {
+            $this->response->error('查询失败,发送');
+        }
+        $this->response->success($saleInfo);
     }
 }
