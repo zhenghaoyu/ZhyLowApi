@@ -50,11 +50,40 @@ class SaleTicketApi
      */
     public function getSaleInfoById($id)
     {
-        $field = "id,phone,url_str";
+        $field = "*";
         $saleInfo = SaleTicketInfoModel::getInstance()->getRow(['id' => $id], $field);
         if (!$saleInfo) {
             return [];
         }
         return $saleInfo;
+    }
+
+    /**
+     * 添加更新优惠券信息
+     * @param $id
+     * @param $saleTicket
+     * @param $recTicket
+     * @return bool|mixed
+     */
+    public function updateTicketInfo($id, $saleTicket, $recTicket)
+    {
+        $data = [
+            'sale_ticket'   => $saleTicket,
+            'reco_ticket'   => $recTicket,
+            'sendtime'      => time(),
+        ];
+        $res = SaleTicketInfoModel::getInstance()->update("id=$id", $data);
+        return $res;
+    }
+
+    /**
+     * 给用户发送优惠券信息
+     * @param $phone
+     * @param $saleTicket
+     * @param $recTicket
+     */
+    public function sendTicketToUser($phone, $saleTicket, $recTicket)
+    {
+
     }
 }

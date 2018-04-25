@@ -20,6 +20,7 @@ class SaleTicket extends PageBase
         return [
             ['POST', '/addSaleTicket', 'addSaleTicket'],
             ['GET', '/SaleInfoById', 'getSaleInfoById'],
+            ['POST', '/addTicket', 'addTicketInfo'],
         ];
     }
     public function addSaleTicket()
@@ -65,5 +66,34 @@ class SaleTicket extends PageBase
             $this->response->error('查询失败');
         }
         $this->response->success($saleInfo);
+    }
+
+    /**
+     * 添加优惠券信息
+     */
+    public function addTicketInfo()
+    {
+        $id = $this->request->get('id', '');
+        $ticketUrl = $this->request->get('sale_ticket', '');
+        $recommendUrl = $this->request->get('rec_ticket', '');
+        if (empty($id) || (empty($ticketUrl) && empty($recommendUrl)) || (!empty($ticketUrl) && !empty($recommendUrl))) {
+            $this->response->error('入参错误');
+        }
+        $saleApi = new SaleTicketApi();
+        $saleInfo = $saleApi->getSaleInfoById($id);
+        if (empty($saleInfo)) {
+            $this->response->error('id不存在');
+        }
+        if (!empty($saleInfo['sale_ticket']) || !empty($saleInfo['reco_ticket'])) {
+            $this->response->error('优惠信息已提交过');
+        }
+        //添加优惠券信息
+        $res = $saleApi->updateTicketInfo($id, $ticketUrl, $recommendUrl);
+        if (!$res) {
+            $this->response->error('发送失败');
+        }
+        //给用户发送优惠短信
+        $saleApi->sendTicketToUser($saleInfo['phone'], $ticketUrl, $recommendUrl);
+        $this->response->success('发送成功');
     }
 }
