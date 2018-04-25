@@ -38,12 +38,12 @@ class SaleTicket extends PageBase
         }
         //添加查询信息
         $saleApi = new SaleTicketApi();
-        $insertId = $saleApi->addSaleTicketInfo($phone);
+        $insertId = $saleApi->addSaleTicketInfo($phone, $urlStr);
         if (!$insertId) {
             $this->response->error('查询失败,添加');
         }
         //发送短信给后台
-        $sendFlag = $saleApi->sendFindSms($insertId, $urlStr);
+        $sendFlag = $saleApi->sendFindSms($insertId);
         if (!$sendFlag) {
             $this->response->error('查询失败,发送');
         }
