@@ -43,7 +43,7 @@ class SaleTicket extends PageBase
             $this->response->error('查询失败,添加');
         }
         //发送短信给后台
-        $sendFlag = $saleApi->sendFindSms($insertId);
+        $sendFlag = $saleApi->sendFindSms($insertId, $urlStr);
         if (!$sendFlag) {
             $this->response->error('查询失败,发送');
         }

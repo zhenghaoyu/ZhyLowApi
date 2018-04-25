@@ -18,10 +18,11 @@ class SaleTicketApi
      * @param $urlStr
      * @return int
      */
-    public function addSaleTicketInfo($phone)
+    public function addSaleTicketInfo($phone, $urlStr)
     {
         $param = [
             'phone' => $phone,
+            'url_str'   => $urlStr,
             'addtime'   => time(),
         ];
         $insertId = SaleTicketInfoModel::getInstance()->insert($param);
