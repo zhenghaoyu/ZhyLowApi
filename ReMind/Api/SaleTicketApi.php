@@ -18,11 +18,10 @@ class SaleTicketApi
      * @param $urlStr
      * @return int
      */
-    public function addSaleTicketInfo($phone, $urlStr)
+    public function addSaleTicketInfo($phone)
     {
         $param = [
             'phone' => $phone,
-            'url_str'   => $urlStr,
             'addtime'   => time(),
         ];
         $insertId = SaleTicketInfoModel::getInstance()->insert($param);
@@ -36,7 +35,7 @@ class SaleTicketApi
      */
     public function sendFindSms($id)
     {
-        $url = "http://remind.zhengoh.cn/#/list?id=".$id;
+        $url = "http://www.zhengoh.cn/coupon-admin/?id=".$id;
         $content = "查询优惠券".$url. " ";
         $phone = '18601940399';
         $res = HttpUtil::sendDeMolSms($phone, $content);

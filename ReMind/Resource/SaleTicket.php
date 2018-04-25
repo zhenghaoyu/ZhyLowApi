@@ -37,9 +37,8 @@ class SaleTicket extends PageBase
             $this->response->error('验证码错误');
         }
         //添加查询信息
-        $urlStr = 'http:addfasdf 发多少阿斯顿离开家费劲啊是的弗兰克爱上的看法静安寺';
         $saleApi = new SaleTicketApi();
-        $insertId = $saleApi->addSaleTicketInfo($phone, $urlStr);
+        $insertId = $saleApi->addSaleTicketInfo($phone);
         if (!$insertId) {
             $this->response->error('查询失败,添加');
         }
