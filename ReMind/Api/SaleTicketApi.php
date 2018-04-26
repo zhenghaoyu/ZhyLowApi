@@ -84,6 +84,32 @@ class SaleTicketApi
      */
     public function sendTicketToUser($phone, $saleTicket, $recTicket)
     {
+        $sendStr = '';
+        $type = '';
+        if (!empty($saleTicket)) {
+            $type = 'sale';
+            $sendStr = $saleTicket;
+        }
+        if ((!empty($recTicket))) {
+            $type = 'reco';
+            $sendStr = $recTicket;
+        }
+        $formatSendStr = $this->formatSendStr($sendStr);
+        $sendRes = HttpUtil::sendSaleSms($phone, $formatSendStr, $type);
+        return $sendRes;
+    }
 
+    /**
+     * 格式化字符串
+     * @param $str
+     * @return bool|string
+     */
+    public function formatSendStr($str)
+    {
+        if (strpos($str, "￥") === false) {
+            return '';
+        }
+        $str = substr($str, strpos($str, "复制"));
+        return $str;
     }
 }
