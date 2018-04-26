@@ -86,13 +86,16 @@ class SaleTicket extends PageBase
         if (!empty($saleInfo['sale_ticket']) || !empty($saleInfo['reco_ticket'])) {
             $this->response->error('优惠信息已提交过');
         }
+        //给用户发送优惠短信
+        $sendRes = $saleApi->sendTicketToUser($saleInfo['phone'], $ticketUrl, $recommendUrl);
+        if (!$sendRes) {
+            $this->response->error('发送失败');
+        }
         //添加优惠券信息
         $res = $saleApi->updateTicketInfo($id, $ticketUrl, $recommendUrl);
         if (!$res) {
-            $this->response->error('发送失败');
+            $this->response->error('添加失败');
         }
-        //给用户发送优惠短信
-        $saleApi->sendTicketToUser($saleInfo['phone'], $ticketUrl, $recommendUrl);
         $this->response->success('发送成功');
     }
 }
