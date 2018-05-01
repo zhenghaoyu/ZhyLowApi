@@ -114,4 +114,16 @@ class SaleTicketApi
         $str = substr($str, strpos($str, "复制"));
         return $str;
     }
+
+    /**
+     * 格式化发送url
+     * @param $str
+     */
+    public function formatSaleStr($urlStr)
+    {
+        $value = json_encode($urlStr);
+        $value = preg_replace("/\\\u[ed][0-9a-f]{3}\\\u[ed][0-9a-f]{3}/","*",$value);//替换成*
+        $value = json_decode($value);
+        return $value;
+    }
 }

@@ -38,6 +38,7 @@ class SaleTicket extends PageBase
         }
         //添加查询信息
         $saleApi = new SaleTicketApi();
+        $urlStr = $saleApi->formatSaleStr($urlStr);
         $insertId = $saleApi->addSaleTicketInfo($phone, $urlStr);
         if (!$insertId) {
             $this->response->error('查询失败,添加');
