@@ -40,8 +40,8 @@ class SaleTicketApi
         $content = "查询优惠券".$url. " ";
         $phone = '18601940399';
         $res = HttpUtil::sendDeMolSms($phone, $content);
-        $phone = '18665556015';
-        $res = HttpUtil::sendDeMolSms($phone, $content);
+        //$phone = '18665556015';
+        //$res = HttpUtil::sendDeMolSms($phone, $content);
         return $res;
     }
 
