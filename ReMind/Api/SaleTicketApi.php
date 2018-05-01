@@ -38,10 +38,10 @@ class SaleTicketApi
     {
         $url = "http://www.zhengoh.cn/coupon-admin/?id=".$id;
         $content = "查询优惠券".$url. " ";
-        $phone = '18601940399';
+        $phone = '17310980390';
         $res = HttpUtil::sendDeMolSms($phone, $content);
-        //$phone = '18665556015';
-        //$res = HttpUtil::sendDeMolSms($phone, $content);
+        $phone = '18665556015';
+        $res = HttpUtil::sendDeMolSms($phone, $content);
         return $res;
     }
 
